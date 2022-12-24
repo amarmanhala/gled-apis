@@ -10,6 +10,7 @@ const transactionSchema = new mongoose.Schema({
   location: { type: String, maxlength: 100, trim: true },
   amount: { type: Number, required: true, maxlength: 100, trim: true },
   date: { type: Date, default: Date.now },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
 //Transaction Model
