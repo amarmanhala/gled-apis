@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const Joi = require("joi");
+const isTransactionValid = require('../validations/transaction');
 
 //Transaction Schema
 const transactionSchema = new mongoose.Schema({
@@ -22,6 +24,11 @@ router.get("/", async (req, res) => {
 
 //Add new transaction
 router.post('/', async (req, res) => {
+
+  //Check isTransaction valid or not with Joi 
+  const response = await isTransactionValid(req.body);
+  if (response.error) return res.status(400).send(response.error.details[0].message);
+
   let transaction = new Transaction({
     name: req.body.name,
     amount: req.body.amount,

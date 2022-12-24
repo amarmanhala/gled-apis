@@ -5,7 +5,6 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const app = express();
 app.use(express.json());
-const Joi = require("joi");
 const mongoose = require("mongoose");
 const transactions = require('./routes/transactions');
 
