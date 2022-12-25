@@ -1,3 +1,4 @@
+const config = require('config');
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -5,6 +6,8 @@ const userSchema = require('../models/users');
 const isAuthValid = require('../validations/auth')
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 
 //User Model
 const User = mongoose.model("User", userSchema);
@@ -22,7 +25,8 @@ if (!user) return res.status(400).send("Invalid email or password");
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send("Invalid email or password");
 
-  res.send(true);
+  const token = jwt.sign({ _id: user._id }, config.get('jwtPrivateKey'));
+  res.send(token);
 
 
 })

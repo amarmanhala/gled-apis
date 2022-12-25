@@ -1,3 +1,4 @@
+const config = require('config');
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
@@ -9,6 +10,13 @@ const mongoose = require("mongoose");
 const transactions = require('./routes/transactions');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
+
+
+if(!config.get('jwtPrivateKey')) {
+  console.log("Fatal Error: JwtPrivateKey is not defined.");
+  process.exit(1);
+}
+
 
 mongoose
   .connect("mongodb://localhost/gled")
