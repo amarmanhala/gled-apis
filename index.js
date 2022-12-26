@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const transactions = require('./routes/transactions');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
+const getCurrentLoggedUser = require('./routes/getCurrentLoggedUser');
 
 
 if(!config.get('jwtPrivateKey')) {
@@ -24,9 +25,10 @@ mongoose
   .catch((err) => console.error("Could not connect", err));
 
 
-app.use('/api/transactions', transactions);
+app.use('/api/ ', transactions);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use('/api/me', getCurrentLoggedUser);
 
 const port = 3001;
 

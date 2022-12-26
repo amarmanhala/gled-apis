@@ -1,4 +1,4 @@
-
+const auth = require('../middleware/auth');
 const config = require('config');
 const express = require("express");
 const router = express.Router();
@@ -8,11 +8,12 @@ const isUserValid = require('../validations/user');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 
+
 //User Model
 const User = mongoose.model("User", userSchema);
 
 //Add new user
-router.post('/', async (req, res) => {
+router.post('/',auth,  async (req, res) => {
 
   //Check isUser valid or not with Joi 
   const response = await isUserValid(req.body);

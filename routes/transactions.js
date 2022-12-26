@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth');
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -17,7 +18,7 @@ const transactionSchema = new mongoose.Schema({
 const Transaction = mongoose.model("Transaction", transactionSchema);
 
 //Get all transactions
-router.get("/", async (req, res) => {
+router.get("/",auth,  async (req, res) => {
   const transactions = await Transaction.find();
   console.log("u are here")
   res.send(transactions);
