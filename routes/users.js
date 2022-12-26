@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+
 const config = require('config');
 const express = require("express");
 const router = express.Router();
@@ -28,7 +28,7 @@ if (user) return res.status(400).send("User already registered");
   user.password = await bcrypt.hash(user.password, salt);
 
   user = await user.save();
-  const token = jwt.sign({ _id: user._id }, config.get('jwtPrivateKey'));
+  const token = user.generateAuthToken();
   res.header('x-auth-token', token).send(_.pick(user, ['name', 'email', 'id']));
 })
 
