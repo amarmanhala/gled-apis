@@ -1,3 +1,4 @@
+const error = require('./middleware/error');
 const config = require('config');
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -25,10 +26,12 @@ mongoose
   .catch((err) => console.error("Could not connect", err));
 
 
-app.use('/api/ ', transactions);
+app.use('/api/transactions', transactions);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/me', getCurrentLoggedUser);
+
+app.use(error);
 
 const port = 3001;
 
