@@ -1,3 +1,4 @@
+const winston = require('winston');
 const error = require('./middleware/error');
 const config = require('config');
 if (process.env.NODE_ENV !== "production") {
@@ -13,6 +14,7 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const getCurrentLoggedUser = require('./routes/getCurrentLoggedUser');
 
+winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 
 if(!config.get('jwtPrivateKey')) {
   console.log("Fatal Error: JwtPrivateKey is not defined.");

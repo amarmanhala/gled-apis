@@ -1,3 +1,4 @@
+const asyncError = require('../middleware/asyncError');
 const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
@@ -5,16 +6,7 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 const isTransactionValid = require("../validations/transaction");
 
-function asyncMiddleware(handler) {
-  return async (req, res, next) => {
-    try {
-      await handler(req, res);
-    }
-    catch (exception) {
-     next(exception);
-    }
-  }
-}
+
 //Transaction Schema
 const transactionSchema = new mongoose.Schema({
   name: { type: String, required: true, maxlength: 100, trim: true },
@@ -28,8 +20,8 @@ const transactionSchema = new mongoose.Schema({
 const Transaction = mongoose.model("Transaction", transactionSchema);
 
 //Get all transactions
-router.get("/", asyncMiddleware(async (req, res) => {
-  
+router.get("/", asyncError(async (req, res) => {
+    throw new Error('could not find');
     const transactions = await Transaction.find();
     console.log("u are here");
     res.send(transactions);
