@@ -1,56 +1,13 @@
-const winston = require("winston");
-require("winston-mongodb");
-const error = require("./middleware/error");
-const config = require("config");
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
-
 const express = require("express");
+const winston = require("winston");
 const app = express();
 app.use(express.json());
-const mongoose = require("mongoose");
-const transactions = require("./routes/transactions");
-const users = require("./routes/users");
-const auth = require("./routes/auth");
-const getCurrentLoggedUser = require("./routes/getCurrentLoggedUser");
-
-process.on("uncaughtException", (ex) => {
-  winston.error(ex.message, ex);
-  process.exit(1);
-});
-
-winston.exceptions.handle(
-  new winston.transports.File({ filename: "uncaughtException.log" })
-);
-
-process.on("unhandledRejection", (ex) => {
-  winston.error(ex.message, ex);
-  process.exit(1);
-});
-
-winston.add(new winston.transports.File({ filename: "logfile.log" }));
-winston.add(new winston.transports.MongoDB({ db: "mongodb://localhost/gled" }));
-
-if (!config.get("jwtPrivateKey")) {
-  console.log("Fatal Error: JwtPrivateKey is not defined.");
-  process.exit(1);
-}
-
-mongoose
-  .connect("mongodb://localhost/gled")
-  .then(() => console.log("Connected to mongoDB...."))
-  .catch((err) => console.error("Could not connect", err));
-
-app.use("/api/transactions", transactions);
-app.use("/api/users", users);
-app.use("/api/auth", auth);
-app.use("/api/me", getCurrentLoggedUser);
-
-app.use(error);
+require("./setup/logging");
+require("./setup/routes")(app);
+require("./setup/db")();
+require("./setup/config")();
 
 const port = 3001;
-
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  winston.info(`Example app listening on port ${port}`);
 });
