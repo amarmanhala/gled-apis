@@ -19,6 +19,7 @@
     "mongoose": "^6.8.1",
     "nodemon": "^2.0.20",
     "pg-promise": "^10.15.4",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "winston-mongodb": "^5.1.0"
   }
 }

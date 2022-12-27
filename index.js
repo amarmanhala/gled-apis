@@ -1,4 +1,6 @@
+ 
 const winston = require('winston');
+require('winston-mongodb');
 const error = require('./middleware/error');
 const config = require('config');
 if (process.env.NODE_ENV !== "production") {
@@ -15,6 +17,7 @@ const auth = require('./routes/auth');
 const getCurrentLoggedUser = require('./routes/getCurrentLoggedUser');
 
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
+winston.add(new winston.transports.MongoDB({db: 'mongodb://localhost/gled'}));
 
 if(!config.get('jwtPrivateKey')) {
   console.log("Fatal Error: JwtPrivateKey is not defined.");

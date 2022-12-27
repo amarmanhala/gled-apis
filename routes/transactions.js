@@ -21,7 +21,7 @@ const Transaction = mongoose.model("Transaction", transactionSchema);
 
 //Get all transactions
 router.get("/", asyncError(async (req, res) => {
-    throw new Error('could not find');
+    //throw new Error('could not find');
     const transactions = await Transaction.find();
     console.log("u are here");
     res.send(transactions);
