@@ -1,5 +1,6 @@
 const winston = require('winston');
 const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
 
 module.exports = function() {
   mongoose
