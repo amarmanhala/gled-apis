@@ -26,6 +26,7 @@ router.post("/", async (req, res) => {
   const token = user.generateAuthToken();
 
   res.send(token);
+  console.log("First commit of the year");
 });
 
 module.exports = router;
