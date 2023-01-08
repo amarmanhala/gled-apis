@@ -13,7 +13,7 @@ const bcrypt = require('bcrypt');
 const User = mongoose.model("User", userSchema);
 
 //Add new user
-router.post('/',auth,  async (req, res) => {
+router.post('/', async (req, res) => {
 
   //Check isUser valid or not with Joi 
   const response = await isUserValid(req.body);
