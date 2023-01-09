@@ -8,7 +8,6 @@ const isUserValid = require('../validations/user');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 
-
 //User Model
 const User = mongoose.model("User", userSchema);
 
@@ -19,7 +18,7 @@ router.post('/', async (req, res) => {
   const response = await isUserValid(req.body);
   if (response.error) return res.status(400).send(response.error.details[0].message);
 
-let user = await User.findOne( { email: req.body.email })
+let user = await User.findOne( { email: req.body.email });
 if (user) return res.status(400).send("User already registered");
 
   user = new User(_.pick(req.body, ['name', 'email', 'password']));
@@ -32,6 +31,5 @@ if (user) return res.status(400).send("User already registered");
   const token = user.generateAuthToken();
   res.header('x-auth-token', token).send(_.pick(user, ['name', 'email', 'id']));
 })
-
 
 module.exports = router;
