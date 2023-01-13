@@ -6,6 +6,8 @@ const userSchema = require("../models/users");
 const isAuthValid = require("../validations/auth");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
+const cors = require('cors');
+
 
 //User Model
 const User = mongoose.model("User", userSchema);
@@ -18,10 +20,10 @@ router.post("/", async (req, res) => {
     return res.status(400).send(response.error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("Invalid email or password");
+  if (!user) return res.status(400).send("Invalid email");
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(400).send("Invalid email or password");
+  if (!validPassword) return res.status(400).send("Invalid password");
 
   const token = user.generateAuthToken();
 

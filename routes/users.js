@@ -29,7 +29,9 @@ if (user) return res.status(400).send("User already registered");
 
   user = await user.save();
   const token = user.generateAuthToken();
-  res.header('x-auth-token', token).send(_.pick(user, ['name', 'email', 'id']));
+  res.header('x-auth-token', token)
+  .header("access-control-expose-headers", "x-auth-token")
+  .send(_.pick(user, ['name', 'email', 'id']));
 })
 
 module.exports = router;
